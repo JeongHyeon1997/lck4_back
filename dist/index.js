@@ -18,7 +18,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const port = 8000;
 const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: ["lck4-front.vercel.app", "http://localhost:3000"],
     methods: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
     credentials: true, // 헤더에 'Access-Control-Allow-Credentials: true'를 추가합니다.
     allowedHeaders: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
