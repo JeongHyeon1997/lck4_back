@@ -5,13 +5,20 @@ require("dotenv").config();
 const crypto = require("crypto");
 const router = express.Router();
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  const mysqlConnect = await mysql;
-  const [record] = await mysqlConnect.execute(`
+router.get(
+  "/:year/:month",
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.params);
+    const { year, month } = req.params;
+    console.log(year);
+    console.log(month);
+    const mysqlConnect = await mysql;
+    const [record] = await mysqlConnect.execute(`
     SELECT * FROM RECORD
   `);
-  res.send(record);
-});
+    res.send(record);
+  }
+);
 
 router.post("/lol", async (req: Request, res: Response, next: NextFunction) => {
   const userName = req.body.userName;
