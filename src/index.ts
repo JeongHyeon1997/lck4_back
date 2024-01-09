@@ -11,6 +11,10 @@ app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
 // 서버가 읽을 수 있도록 HTML 의 위치를 정의해줍니다.
 app.use(express.static("public"));
 
+const lck4 = require("./routes/lck4");
+
+app.use("/lck4", lck4);
+
 app.get("/", async (req: Request, res: Response, next: NextFunction) => {
   res.send("LCK 4부 리그 API");
 });
