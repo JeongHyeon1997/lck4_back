@@ -10,11 +10,14 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.params);
     const { year, month } = req.params;
-    console.log(year);
-    console.log(month);
     const mysqlConnect = await mysql;
     const [record] = await mysqlConnect.execute(`
-    SELECT * FROM RECORD
+    SELECT
+      *
+    FROM
+      RECORD
+    WHERE
+      DATE_FORMAT(startDate, '%Y%m') = '${year}${month}';
   `);
     res.send(record);
   }

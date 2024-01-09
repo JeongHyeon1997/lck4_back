@@ -21,11 +21,14 @@ const router = express_1.default.Router();
 router.get("/:year/:month", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.params);
     const { year, month } = req.params;
-    console.log(year);
-    console.log(month);
     const mysqlConnect = yield mysql_1.default;
     const [record] = yield mysqlConnect.execute(`
-    SELECT * FROM RECORD
+    SELECT
+      *
+    FROM
+      RECORD
+    WHERE
+      DATE_FORMAT(startDate, '%Y%m') = '${year}${month}';
   `);
     res.send(record);
 }));
