@@ -7,27 +7,6 @@ require("dotenv").config();
 const crypto = require("crypto");
 const router = express.Router();
 
-router.get(
-  "/:year/:month",
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { year, month } = req.params;
-      const mysqlConnect = await mysql;
-      const [record] = await mysqlConnect.execute(`
-      SELECT
-        *
-      FROM
-        RECORD
-      WHERE
-        DATE_FORMAT(startDate, '%Y%m') = '${year}${month}';
-    `);
-      res.send(record);
-    } catch (e) {
-      throw e;
-    }
-  }
-);
-
 router.post("/lol", async (req: Request, res: Response, next: NextFunction) => {
   const userName = req.body.userName;
   const mysqlConnect = await mysql;
@@ -99,5 +78,48 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     throw e;
   }
 });
+
+router.get(
+  "/record/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const mysqlConnect = await mysql;
+      const [record] = await mysqlConnect.execute(`
+      SELECT
+        *
+      FROM
+        RECORD
+      WHERE
+        id = ${id};
+    `);
+      res.send(record);
+    } catch (e) {
+      throw e;
+    }
+  }
+);
+
+router.get(
+  "/:year/:month",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { year, month } = req.params;
+      const formatMonth = month.length === 1 ? `0${month}` : month;
+      const mysqlConnect = await mysql;
+      const [record] = await mysqlConnect.execute(`
+      SELECT
+        *
+      FROM
+        RECORD
+      WHERE
+        DATE_FORMAT(startDate, '%Y%m') = '${year}${formatMonth}';
+    `);
+      res.send(record);
+    } catch (e) {
+      throw e;
+    }
+  }
+);
 
 module.exports = router;

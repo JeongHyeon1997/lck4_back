@@ -20,24 +20,6 @@ const mysql_1 = __importDefault(require("../utils/mysql"));
 require("dotenv").config();
 const crypto = require("crypto");
 const router = express_1.default.Router();
-router.get("/:year/:month", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { year, month } = req.params;
-        const mysqlConnect = yield mysql_1.default;
-        const [record] = yield mysqlConnect.execute(`
-      SELECT
-        *
-      FROM
-        RECORD
-      WHERE
-        DATE_FORMAT(startDate, '%Y%m') = '${year}${month}';
-    `);
-        res.send(record);
-    }
-    catch (e) {
-        throw e;
-    }
-}));
 router.post("/lol", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userName = req.body.userName;
     const mysqlConnect = yield mysql_1.default;
@@ -91,6 +73,43 @@ router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
       USER
   `);
         res.send(userList);
+    }
+    catch (e) {
+        throw e;
+    }
+}));
+router.get("/record/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const mysqlConnect = yield mysql_1.default;
+        const [record] = yield mysqlConnect.execute(`
+      SELECT
+        *
+      FROM
+        RECORD
+      WHERE
+        id = ${id};
+    `);
+        res.send(record);
+    }
+    catch (e) {
+        throw e;
+    }
+}));
+router.get("/:year/:month", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { year, month } = req.params;
+        const formatMonth = month.length === 1 ? `0${month}` : month;
+        const mysqlConnect = yield mysql_1.default;
+        const [record] = yield mysqlConnect.execute(`
+      SELECT
+        *
+      FROM
+        RECORD
+      WHERE
+        DATE_FORMAT(startDate, '%Y%m') = '${year}${formatMonth}';
+    `);
+        res.send(record);
     }
     catch (e) {
         throw e;
