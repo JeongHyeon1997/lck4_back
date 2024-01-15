@@ -109,15 +109,19 @@ router.get(
       const [match] = await mysqlConnect.execute(`
       SELECT
         m.id as id
-        , "닉네임" as fristTeamUser
-        , "닉네임" as secondTeamUser
-        , "챔피언" as Champion
+        , u1.name as fristTeamUserName
+        , "챔피언" as fristTeamUserChampion
+        , m.firstTeamUserMVP as fristTeamUserMVP
+        , u2.name as secondTeamUserName
+        , "챔피언" as secondTeamUserChampion
+        , m.secondTeamUserMVP as secondTeamUserMVP
         , m.Line as Line
-        , m.MVP as MVP
         , m.CreateDate as CreateDate
       FROM
         MACTH m
       LEFT OUTER JOIN RECORD r ON m.RecordId = r.id
+      LEFT OUTER JOIN USER u1 ON u1.id = m.firstTeamUserId
+      LEFT OUTER JOIN USER u2 ON u2.id = m.secondTeamUserId
       WHERE
         RecordId = ${id};
     `);
