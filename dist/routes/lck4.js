@@ -96,6 +96,31 @@ router.get("/record/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, 
         throw e;
     }
 }));
+router.get("/record/match/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const mysqlConnect = yield mysql_1.default;
+        const [match] = yield mysqlConnect.execute(`
+      SELECT
+        m.id as id
+        , "닉네임" as fristTeamUser
+        , "닉네임" as secondTeamUser
+        , "챔피언" as Champion
+        , m.Line as Line
+        , m.MVP as MVP
+        , m.CreateDate as CreateDate
+      FROM
+        MACTH m
+      LEFT OUTER JOIN RECORD r ON m.RecordId = r.id
+      WHERE
+        RecordId = ${id};
+    `);
+        res.send(match);
+    }
+    catch (e) {
+        throw e;
+    }
+}));
 router.get("/:year/:month", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { year, month } = req.params;
