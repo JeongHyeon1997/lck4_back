@@ -101,6 +101,34 @@ router.get(
 );
 
 router.get(
+  "/record/match/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const mysqlConnect = await mysql;
+      const [match] = await mysqlConnect.execute(`
+      SELECT
+        m.id as id
+        , "닉네임" as fristTeamUser
+        , "닉네임" as secondTeamUser
+        , "챔피언" as Champion
+        , m.Line as Line
+        , m.MVP as MVP
+        , m.CreateDate as CreateDate
+      FROM
+        MACTH m
+      LEFT OUTER JOIN RECORD r ON m.RecordId = r.id
+      WHERE
+        RecordId = ${id};
+    `);
+      res.send(match);
+    } catch (e) {
+      throw e;
+    }
+  }
+);
+
+router.get(
   "/:year/:month",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
