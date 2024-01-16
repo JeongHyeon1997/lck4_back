@@ -9,10 +9,11 @@ const corsOptions = {
     "https://www.lck4.lol",
     "https://lck4.lol",
     "http://localhost:3000",
-    "http://1.220.213.141:3000", // 시드 스터디카페
+    "http://1.220.213.141:3000", // location : Seed
+    "http://114.199.130.61:3000", // location : potato house
   ],
   methods: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-  credentials: true, // 헤더에 'Access-Control-Allow-Credentials: true'를 추가합니다.
+  credentials: true,
   allowedHeaders:
     "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
 };
@@ -21,7 +22,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: "5mb" }));
 app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
 
-// 서버가 읽을 수 있도록 HTML 의 위치를 정의해줍니다.
 app.use(express.static("public"));
 
 const lck4 = require("./routes/lck4");
