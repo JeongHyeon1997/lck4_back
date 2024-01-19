@@ -10,6 +10,7 @@ const router = express.Router();
 router.post("/lol", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userName = req.body.userName;
+    const tag = req.body.tag.replace("#", "");
     const password = req.body.password;
     const mysqlConnect = await mysql;
     const userInfo = await axios.get(
@@ -22,7 +23,7 @@ router.post("/lol", async (req: Request, res: Response, next: NextFunction) => {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
-    await page.goto(`https://fow.kr/find/${userName}`);
+    await page.goto(`https://fow.kr/find/${userName}-${tag}`);
 
     const result = await page.evaluate(() => {
       const contentContainer = document.querySelector(
